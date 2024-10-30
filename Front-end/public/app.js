@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Cargar la sección inicial
-    loadPage('DASHBOARD/dashboard.html'); // Cargar la página inicial
+    loadPage('../navegation-bar/navegation.html'); // Cargar la página inicial
 
     // Escuchar eventos de clic en los enlaces
     links.forEach(link => {

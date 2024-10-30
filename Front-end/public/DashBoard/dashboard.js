@@ -8,8 +8,8 @@ fetch('/Data/data_2023.json')
     })
     .then(data => {
         // Preparar los datos para la gráfica
-        const labels = data.meses; // Meses
-        const salesData = data.totales; // Totales de ventas
+        const labels = data.meses; // 'meses' es un array en tu JSON
+        const salesData = data.totales; // 'totales' es un array en tu JSON
 
         // Crear la gráfica circular
         const ctx = document.getElementById('salesChart').getContext('2d');
@@ -44,6 +44,39 @@ fetch('/Data/data_2023.json')
                     }
                 }
             }
+        });
+
+        // Actualizar la lista de "Warehouse Detail"
+        const warehouseList = document.getElementById('warehouse-list');
+        const totalPrimerSemestre = salesData.slice(0, 6).reduce((acc, curr) => acc + curr, 0); // Suma de Enero a Junio
+        const totalSegundoSemestre = salesData.slice(6, 12).reduce((acc, curr) => acc + curr, 0); // Suma de Julio a Diciembre
+
+        // Actualizar los elementos de la lista con formato de número
+        warehouseList.innerHTML = `
+            <li><span>Enero a junio</span><span>${totalPrimerSemestre.toLocaleString()} Ventas del semestre</span></li>
+            <li><span>Julio a diciembre</span><span>${totalSegundoSemestre.toLocaleString()} Ventas del semestre</span></li>
+        `;
+
+        // Configurar las barras de progreso
+        const progressBars = document.querySelectorAll('.progress');
+
+        // Obtener el total máximo para normalizar el porcentaje
+        const totalSales = Math.max(...salesData);
+
+        progressBars.forEach((bar, index) => {
+            const progress = salesData[index]; // Asignar los valores de las ventas a las barras
+            const percentage = (progress / totalSales) * 100; // Calcular el porcentaje
+
+            bar.style.width = '0%'; // Inicialmente, las barras están en 0%
+
+            // Aumentar la barra al 100% del porcentaje calculado
+            setTimeout(() => {
+                bar.style.width = percentage + '%'; // Luego, aumenta a su valor correspondiente
+            }, 100); // Tiempo de retardo antes de mostrar el progreso
+
+            // Actualizar el <span> con el valor de ventas correspondiente
+            const spanValue = bar.previousElementSibling; // Seleccionar el <span> antes de la barra
+            spanValue.innerText = progress.toLocaleString(); // Mostrar el valor formateado
         });
     })
     .catch(error => console.error('Error cargando el archivo JSON:', error));
