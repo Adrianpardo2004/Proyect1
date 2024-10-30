@@ -1,0 +1,26 @@
+/* Estilos adicionales */
+.country-filter {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.country-filter label {
+    font-weight: 600;
+    color: #35424a;
+}
+
+#countrySelect {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.chart-container {
+    width: 100%;
+    max-width: 700px;
+    margin: 20px auto;
+}
