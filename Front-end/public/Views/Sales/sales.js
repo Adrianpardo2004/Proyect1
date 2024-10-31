@@ -1,5 +1,5 @@
 // Cargar datos desde el archivo JSON y generar la gráfica y tabla
-fetch('Data/sales_by_country.json') // Asegúrate de usar la ruta correcta
+fetch('../../Data/sales_by_country.json') // Asegúrate de usar la ruta correcta
     .then(response => {
         if (!response.ok) {
             throw new Error('Error al cargar el archivo JSON: ' + response.statusText);
@@ -63,3 +63,6 @@ fetch('Data/sales_by_country.json') // Asegúrate de usar la ruta correcta
         });
     })
     .catch(error => console.error('Error al cargar el archivo JSON:', error));
+
+  
+    
