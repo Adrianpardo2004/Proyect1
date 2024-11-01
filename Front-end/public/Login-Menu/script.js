@@ -10,115 +10,6 @@ function showToast(message) {
     }, 3000);
 }
 
-// Inicializar Partículas
-particlesJS('particles-js', {
-    "particles": {
-        "number": {
-            "value": 80,
-            "density": {
-                "enable": true,
-                "value_area": 800
-            }
-        },
-        "color": {
-            "value": "#0000ff" // Cambiado a azul
-        },
-        "shape": {
-            "type": "circle",
-            "stroke": {
-                "width": 0,
-                "color": "#000000"
-            },
-            "polygon": {
-                "nb_sides": 5
-            },
-            "image": {
-                "width": 100,
-                "height": 100
-            }
-        },
-        "opacity": {
-            "value": 0.5,
-            "random": false,
-            "anim": {
-                "enable": false,
-                "speed": 1,
-                "opacity_min": 0.1,
-                "sync": false
-            }
-        },
-        "size": {
-            "value": 8, // Tamaño más grande
-            "random": true,
-            "anim": {
-                "enable": false,
-                "speed": 40,
-                "size_min": 0.1,
-                "sync": false
-            }
-        },
-        "line_linked": {
-            "enable": true,
-            "distance": 150,
-            "color": "#ffffff",
-            "opacity": 0.4,
-            "width": 1
-        },
-        "move": {
-            "enable": true,
-            "speed": 6,
-            "direction": "none",
-            "random": false,
-            "straight": false,
-            "out_mode": "out",
-            "attract": {
-                "enable": false,
-                "rotateX": 600,
-                "rotateY": 1200
-            }
-        }
-    },
-    "interactivity": {
-        "detect_on": "canvas",
-        "events": {
-            "onhover": {
-                "enable": true,
-                "mode": "repulse"
-            },
-            "onclick": {
-                "enable": true,
-                "mode": "push"
-            },
-            "resize": true
-        },
-        "modes": {
-            "grab": {
-                "distance": 400,
-                "line_linked": {
-                    "opacity": 1
-                }
-            },
-            "bubble": {
-                "distance": 400,
-                "size": 40,
-                "duration": 2,
-                "opacity": 8,
-                "speed": 3
-            },
-            "repulse": {
-                "distance": 200
-            },
-            "push": {
-                "particles_nb": 4
-            },
-            "remove": {
-                "particles_nb": 2
-            }
-        }
-    },
-    "retina_detect": true
-});
-
 // Escuchar el evento de envío del formulario de registro
 document.getElementById('signup-form').addEventListener('submit', function(event) {
     event.preventDefault(); // Evita el envío del formulario
@@ -192,3 +83,30 @@ document.getElementById('signup-toggle').addEventListener('click', function() {
         signupForm.classList.remove('hidden');
     }, 500); // Tiempo de la animación
 });
+
+// script.js
+
+// Escuchar el evento de envío del formulario de inicio de sesión
+document.getElementById('login-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Previene el envío del formulario
+
+    // Muestra el loader
+    document.getElementById('loader').style.display = 'flex';
+
+    // Simula un retraso para la carga (reemplaza esto con tu lógica de autenticación)
+    setTimeout(function() {
+        // Aquí iría la lógica para redirigir al usuario, por ejemplo:
+        // window.location.href = 'pagina-siguiente.html';
+
+        // Oculta el loader después de simular la carga
+        document.getElementById('loader').style.display = 'none';
+    }, 2000); // Simula 2 segundos de carga
+});
+
+// Escuchar el evento de envío del formulario de registro si es necesario
+document.getElementById('signup-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Previene el envío del formulario
+
+    // Puedes agregar una lógica similar para mostrar un loader para el registro
+});
+
