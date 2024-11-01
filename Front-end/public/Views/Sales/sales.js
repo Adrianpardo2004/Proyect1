@@ -1,6 +1,11 @@
 // Cargar datos desde el archivo JSON y generar la gráfica y tabla
-fetch('\\Data\\ventas_por_pais.json') // Ruta corregida
-    .then(response => response.json())
+fetch('Data/sales_by_country.json') // Asegúrate de usar la ruta correcta
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error al cargar el archivo JSON: ' + response.statusText);
+        }
+        return response.json();
+    })
     .then(data => {
         const salesTableBody = document.getElementById('salesTable').getElementsByTagName('tbody')[0];
         const maxSales = {};

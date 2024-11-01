@@ -175,3 +175,23 @@ body {
     width: 150px;
     margin: 20px 0;
 }
+
+/* Estilos de las barras de progreso */
+.progress-bar {
+    height: 8px; /* Cambia el tamaño de la barra aquí */
+    background-color: #4CAF50;
+    border-radius: 5px;
+    width: 0%; /* Inicialmente, el ancho puede ser 0% */
+    transition: width 0.3s ease; /* Añade una transición suave para el cambio de tamaño */
+}
+
+#dashboard-content {
+    width: 100%;
+    max-width: 600px; /* Ajusta este valor según el tamaño deseado */
+    margin: auto;
+}
+
+.chart-container {
+    width: 100%; /* Para que el gráfico ocupe todo el contenedor */
+    height: 400px; /* Ajusta la altura según sea necesario */
+}

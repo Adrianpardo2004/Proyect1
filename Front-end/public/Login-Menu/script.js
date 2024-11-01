@@ -168,7 +168,7 @@ document.getElementById('login-form').addEventListener('submit', function(event)
         showToast('Login successful!'); // Mostrar el toast de éxito
         // Aquí puedes redirigir al usuario o mostrar un mensaje de éxito
         setTimeout(() => {
-            window.location.href = '../DASHBOARD/dashboard.html'; // Cambia la ruta según sea necesario
+            window.location.href = '../Navegation-bar/navegation.html'; // Cambia la ruta según sea necesario
         }, 3000); // Esperar 3 segundos antes de redirigir
     } else {
         console.log('Email o contraseña incorrectos');
