@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Navegation</title>
     <link rel="stylesheet" href="navegation.css">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
@@ -28,19 +29,22 @@
         <div class="user-options">
             <div class="user-profile" id="user-profile">
                 <img src="img/user.jpg" alt="User">
-                <div class="dropdown" id="dropdown">
-                    <button class="dropdown-button">▼</button>
-                    <div class="dropdown-content">
-                        <a href="#" id="logoutButton">Log Out</a>
-                    </div>
+                <button class="dropdown-button" id="dropdownButton">▼</button>
+                <div class="dropdown-content" id="dropdownContent">
+                    <a href="#" id="logoutButton">Log Out</a>
                 </div>
             </div>
         </div>
+
+
     </header>
 
     <main class="main-content" id="content">
         <!-- El contenido de dashboard.html se cargará aquí -->
+         
     </main>
+
+    <script src="../DashBoard/dashboard.js"></script>
 
     <script src="navegation.js"></script>
     <script>

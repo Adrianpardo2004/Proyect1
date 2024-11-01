@@ -15,12 +15,11 @@ function loadPage(pageUrl) {
             loadAdditionalResources(pageUrl);
 
             // Inicializar el gráfico si es el dashboard
-            if (pageUrl.includes('dashboard.html')) {
-                initializeDashboard();
+            if (pageUrl.includes('../DashBoard/dashboard.html')) {
+                // Llamar a la función para cargar datos y dibujar el gráfico
+                loadSalesDataAndDrawChart(); // Asegúrate de que la función esté disponible
                 initializeParticles(); // Inicializar partículas al cargar el dashboard
-            }
-            // Inicializar lógica específica si es sales.html
-            else if (pageUrl.includes('sales.html')) {
+            } else if (pageUrl.includes('../Views/Sales/sales.html')) {
                 console.log("Sales page loaded");
             }
         })
@@ -30,89 +29,16 @@ function loadPage(pageUrl) {
         });
 }
 
-// Inicializar funciones específicas del dashboard
-function initializeDashboard() {
-    fetch('/Data/data_2023.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Preparar los datos para la gráfica
-            const labels = data.meses;
-            const salesData = data.totales;
 
-            // Crear la gráfica circular
-            const ctx = document.getElementById('salesChart').getContext('2d');
-            const salesChart = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Ventas Mensuales',
-                        data: salesData,
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.6)',
-                            'rgba(54, 162, 235, 0.6)',
-                            'rgba(255, 206, 86, 0.6)',
-                            'rgba(75, 192, 192, 0.6)',
-                            'rgba(153, 102, 255, 0.6)',
-                            'rgba(255, 159, 64, 0.6)',
-                        ],
-                        borderColor: 'rgba(255, 255, 255, 1)',
-                        borderWidth: 1,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { position: 'top' },
-                        title: { display: true, text: 'Composición de Ventas Mensuales' }
-                    }
-                }
-            });
-
-            // Actualizar la lista de "Warehouse Detail"
-            updateWarehouseList(salesData);
-
-            // Configurar las barras de progreso
-            configureProgressBars(salesData);
-        })
-        .catch(error => console.error('Error cargando el archivo JSON:', error));
-}
-
-// Actualizar la lista "Warehouse Detail"
-function updateWarehouseList(salesData) {
-    const warehouseList = document.getElementById('warehouse-list');
-    const totalPrimerSemestre = salesData.slice(0, 6).reduce((acc, curr) => acc + curr, 0);
-    const totalSegundoSemestre = salesData.slice(6, 12).reduce((acc, curr) => acc + curr, 0);
-
-    warehouseList.innerHTML = `
-        <li><span>Enero a junio</span><span>${totalPrimerSemestre.toLocaleString()} Ventas del semestre</span></li>
-        <li><span>Julio a diciembre</span><span>${totalSegundoSemestre.toLocaleString()} Ventas del semestre</span></li>
-    `;
-}
-
-// Configurar barras de progreso
-function configureProgressBars(salesData) {
-    const progressBars = document.querySelectorAll('.progress');
-    const totalSales = Math.max(...salesData);
-
-    progressBars.forEach((bar, index) => {
-        const progress = salesData[index];
-        const percentage = (progress / totalSales) * 100;
-
-        bar.style.width = '0%';
-        setTimeout(() => {
-            bar.style.width = percentage + '%';
-        }, 100);
-
-        const spanValue = bar.previousElementSibling;
-        spanValue.innerText = progress.toLocaleString();
-    });
-}
+// navigation.js
+document.addEventListener('DOMContentLoaded', () => {
+    // Verifica si la función existe antes de llamarla
+    if (typeof loadSalesDataAndDrawChart === 'function') {
+        loadSalesDataAndDrawChart(); // Llamar a la función para cargar datos y dibujar el gráfico
+    } else {
+        console.error('La función loadSalesDataAndDrawChart no está definida.');
+    }
+});
 
 // Inicializar partículas
 function initializeParticles() {
@@ -153,29 +79,56 @@ function loadAdditionalResources(pageUrl) {
     const jsFile = pageUrl.replace('.html', '.js');
     const script = document.createElement('script');
     script.src = jsFile;
+    
+    // Aquí se asegura de que el gráfico se cargue después de que el script se haya cargado
+    script.onload = () => {
+        // Llamar a la función para cargar datos y dibujar el gráfico si es el dashboard
+        if (pageUrl.includes('dashboard.html')) {
+            loadSalesDataAndDrawChart(); // Asegúrate de que la función esté disponible
+        }
+    };
+    
     document.body.appendChild(script);
 }
+
 
 // Configuración del menú de usuario
 document.addEventListener('DOMContentLoaded', () => {
     const logoutButton = document.getElementById("logoutButton");
-    const userProfileImg = document.querySelector('.user-profile img');
-    const dropdownContent = document.querySelector('.dropdown-content');
+    const dropdownButton = document.getElementById("dropdownButton");
+    const dropdownContent = document.getElementById("dropdownContent");
 
-    userProfileImg.addEventListener('click', () => {
+    // Mostrar el menú desplegable al hacer clic en el botón ▼
+    dropdownButton.addEventListener('click', (event) => {
+        event.stopPropagation(); // Evitar que el clic se propague
         dropdownContent.classList.toggle('show');
     });
 
-    logoutButton.addEventListener("click", (event) => {
-        event.preventDefault();
-        window.location.href = "../SING_UP/index.html";
-    });
-
-    window.addEventListener('click', (event) => {
-        if (!event.target.matches('.user-profile img')) {
-            if (dropdownContent.classList.contains('show')) {
-                dropdownContent.classList.remove('show');
-            }
+    // Ocultar el menú desplegable al hacer clic fuera del menú
+    document.addEventListener('click', (event) => {
+        if (!dropdownContent.contains(event.target) && !dropdownButton.contains(event.target)) {
+            dropdownContent.classList.remove('show');
         }
     });
+
+    // Acción para cerrar sesión
+    logoutButton.addEventListener("click", (event) => {
+        event.preventDefault(); // Evita la acción predeterminada del botón
+        sessionStorage.removeItem("authenticated");
+
+        // Reemplaza el estado actual en el historial del navegador
+        history.replaceState(null, null, "../Login-Menu/index.html");
+
+        // Redirecciona al login
+        window.location.href = "../Login-Menu/index.html";
+    });
 });
+
+
+
+
+
+
+
+
+
