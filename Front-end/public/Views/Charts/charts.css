@@ -12,51 +12,6 @@ body {
     color: #333;
 }
 
-/* Encabezado */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: #35424a;
-    border-bottom: 1px solid #ddd;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-}
-
-.logo img {
-    width: 40px;
-    margin-right: 10px;
-}
-
-.nav ul {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-
-.nav a {
-    text-decoration: none;
-    color: #FFFFFF;
-    font-weight: 600;
-}
-
-/* Opciones de usuario */
-.user-options {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.user-profile img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-}
-
 /* Estilos del contenido principal */
 .main-content {
     padding: 40px;
