@@ -6,8 +6,7 @@ import matplotlib.pyplot as plt
 from xgboost import XGBRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import MinMaxScaler
-from babel.dates import format_date
-import calendar  # Importar el módulo calendar
+import calendar
 
 # Cargar los datos
 file_path = r'C:\Users\Lenovo\Documents\FA_CAFAC_cod_pais_modificado.xlsx'
@@ -56,12 +55,8 @@ with open(os.path.join(output_dir, 'data_2023.json'), 'w') as json_file:
 
 # Visualizar los resultados
 plt.figure(figsize=(15, 5))
-
-# Gráfico de las ventas totales por mes
 plt.bar(ventas_totales_dict["meses"], ventas_totales_dict["totales"], color='red', label='Ventas Totales')
-
-# Mostrar el gráfico
-plt.xticks(np.arange(1, 13))  # Marcar los meses en el eje X
+plt.xticks(rotation=45)  # Rotar las etiquetas de los meses
 plt.xlabel('Mes')
 plt.ylabel('Ventas Totales')
 plt.title('Ventas Totales por Mes en 2023')
@@ -105,6 +100,7 @@ y_train, y_test = y[:split], y[split:]
 # Entrenar los modelos
 models = {
     'Linear Regression': LinearRegression(),
+    'XGBoost': XGBRegressor()
 }
 
 for name, model in models.items():
@@ -119,30 +115,52 @@ X_next_year = pd.DataFrame({'date': next_year_dates})
 X_next_year['month'] = X_next_year['date'].dt.month
 X_next_year_scaled = scaler.transform(X_next_year[['month']])
 
-# Realizar predicciones para el año siguiente
+# Realizar predicciones para el año siguiente usando ambos modelos
 predictions_next_year = {}
 for name, model in models.items():
     y_pred_next_year = model.predict(X_next_year_scaled)
     predictions_next_year[name] = y_pred_next_year
 
-# Usar los números de los meses para el JSON
-predictions_2024 = {mes.month: int(pred) for mes, pred in zip(X_next_year['date'], predictions_next_year['Linear Regression'])}
+# Usar los números de los meses para el JSON original
+predictions_2024 = {
+    mes.month: int(predictions_next_year['XGBoost'][i])
+    for i, mes in enumerate(X_next_year['date'])
+}
 
 # Guardar las predicciones en un archivo JSON
 with open(os.path.join(output_dir, 'predictions_2024.json'), 'w') as json_file:
     json.dump(predictions_2024, json_file)
 
+# Calcular las predicciones ajustadas
+total_2023 = sum(ventas_totales_dict["totales"])  # Total de 2023
+crecimiento_porcentaje = 0.10  # 10% de crecimiento
+total_2024_proyectado = total_2023 * (1 + crecimiento_porcentaje)
+
+# Crear un nuevo diccionario para las predicciones ajustadas
+predicciones_2024_ajustadas = {}
+
+# Distribuir el total proyectado por mes
+for mes, total_mes in zip(ventas_totales_dict["meses"], ventas_totales_dict["totales"]):
+    # Calcular el porcentaje de ventas de ese mes en 2023
+    porcentaje_mes = total_mes / total_2023
+    # Asignar el valor proyectado para 2024 basado en ese porcentaje
+    predicciones_2024_ajustadas[mes] = int(total_2024_proyectado * porcentaje_mes)
+
+# Guardar las predicciones ajustadas en un nuevo archivo JSON
+with open(os.path.join(output_dir, 'predictions_2024_ajustadas.json'), 'w') as json_file:
+    json.dump(predicciones_2024_ajustadas, json_file)
+
 # Visualizar los resultados
 plt.figure(figsize=(15, 5))
 
-# Gráfico de predicciones de Linear Regression para el año siguiente
+# Gráfico de predicciones de ambos modelos para el año siguiente
 plt.plot(monthly_sales['date'], monthly_sales['sales'], color='blue', label='Datos reales', marker='o')
-plt.plot(X_next_year['date'], predictions_next_year['Linear Regression'], label='Predicciones Regresión Lineal', color='green')
+plt.plot(X_next_year['date'], predictions_next_year['Linear Regression'], label='Predicciones Regresión Lineal', color='green', linestyle='--')
+plt.plot(X_next_year['date'], predictions_next_year['XGBoost'], label='Predicciones XGBoost', color='orange', linestyle='--')
 plt.xlabel('Fecha')
 plt.ylabel('Ventas')
-plt.title('Predicciones Regresión Lineal para el Año Siguiente')
+plt.title('Predicciones para el Año Siguiente')
 plt.legend()
 plt.grid(True)
-
 plt.tight_layout()
 plt.show()
