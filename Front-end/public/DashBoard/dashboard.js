@@ -1,6 +1,6 @@
 var salesChart; // Declarar salesChart en un ámbito mayor para poder acceder a él
 
-// Definición de la función
+// Definición de la función para cargar datos y dibujar el gráfico
 function loadSalesDataAndDrawChart() {
     console.log("Cargando datos y dibujando gráfico...");
 
@@ -91,6 +91,20 @@ function loadSalesDataAndDrawChart() {
             });
         })
         .catch(error => console.error('Error cargando el archivo JSON:', error));
+}
+
+// Función para descargar la imagen del gráfico
+function downloadChartImage() {
+    if (!salesChart) {
+        alert("El gráfico no está disponible para descargar.");
+        return;
+    }
+
+    const canvas = document.getElementById('salesChart');
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL("image/png");
+    link.download = 'grafica_ventas.png';
+    link.click();
 }
 
 // Llamar a la función después de que el DOM esté completamente cargado
