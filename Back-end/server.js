@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 
 // Ruta para descargar el archivo CSV
 app.get('/download/csv', (req, res) => {
-    const filePath = path.join(__dirname, '..', 'FA_CAFAC_cod_pais_modificado.xlsx'); // Asegúrate de que esta ruta sea correcta
+    const filePath = path.join(__dirname, '..', 'Back-end', 'FA_CAFAC_cod_pais_modificado.xlsx'); // Asegúrate de que esta ruta sea correcta
     res.download(filePath, 'FA_CAFAC_cod_pais_modificado.xlsx', (err) => {
         if (err) {
             console.error('Error al descargar el archivo:', err);
