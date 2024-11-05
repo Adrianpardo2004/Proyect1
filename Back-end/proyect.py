@@ -8,8 +8,13 @@ from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import MinMaxScaler
 import calendar
 
+# Obtener la ruta del directorio actual
+current_dir = os.path.dirname(__file__)  # Esto te dará la ruta de la carpeta donde está el script
+
+# Crear la ruta relativa al archivo
+file_path = os.path.join(current_dir, 'FA_CAFAC_cod_pais_modificado.xlsx')
+
 # Cargar los datos
-file_path = r'C:\Users\Lenovo\Documents\FA_CAFAC_cod_pais_modificado.xlsx'
 store_sales = pd.read_excel(file_path, engine='openpyxl')
 
 # Verifica la carga de los datos
@@ -46,7 +51,7 @@ for _, row in monthly_sales_grouped.iterrows():
     ventas_totales_dict["totales"].append(int(row['sales']))  # Asegurarse de que sea un int de Python
 
 # Crear directorios si no existen
-output_dir = r'../Front-end/public/Data'
+output_dir = os.path.join(current_dir, '../Front-end/public/Data')  # Ruta relativa para la salida
 os.makedirs(output_dir, exist_ok=True)
 
 # Guardar datos de ventas totales en un archivo JSON
