@@ -121,15 +121,15 @@ for name, model in models.items():
     y_pred_next_year = model.predict(X_next_year_scaled)
     predictions_next_year[name] = y_pred_next_year
 
-# Usar los números de los meses para el JSON original
+# Usar los nombres de los meses para el JSON
 predictions_2024 = {
-    mes.month: int(predictions_next_year['XGBoost'][i])
-    for i, mes in enumerate(X_next_year['date'])
+    calendar.month_name[month]: int(predictions_next_year['XGBoost'][i])  # Usar el nombre del mes
+    for i, month in enumerate(X_next_year['month'])
 }
 
 # Guardar las predicciones en un archivo JSON
 with open(os.path.join(output_dir, 'predictions_2024.json'), 'w') as json_file:
-    json.dump(predictions_2024, json_file)
+    json.dump(predictions_2024, json_file, ensure_ascii=False)
 
 # Calcular las predicciones ajustadas
 total_2023 = sum(ventas_totales_dict["totales"])  # Total de 2023
