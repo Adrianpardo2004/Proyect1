@@ -4,38 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ventas Totales por País</title>
-    <link rel="stylesheet" href="sales.css">
+    <link rel="stylesheet" href="/sales.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <!-- Encabezado con logo y navegación -->
-    <h1>Ventas Totales en el Año 2023</h1>
 
-    <!-- Contenedor para la gráfica de barras -->
-    <div>
-        <canvas id="salesChart"></canvas>
-    </div>
-
-    <!-- Tabla de ventas -->
-    <table id="salesTable">
-        <thead>
-            <tr>
-                <th>Mes</th>
-                <th>Código País</th>
-                <th>Ventas Totales</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Los datos se agregarán aquí mediante JavaScript -->
-        </tbody>
-    </table>
-
-    <!-- Carga dinámica de sales.js -->
-    <script>
-        // Se carga sales.js aquí si no se carga dinámicamente
-        const script = document.createElement('script');
-        script.src = 'sales.js';
-        document.body.appendChild(script);
-    </script>
+    <main class="main-content">
+        <h1>Desempeño de Ventas: Análisis 2023 y Proyecciones 2024</h1>
+        <!-- Opciones de filtro para ver datos de todos los meses, pares o impares -->
+        <section class="filter-options">
+            <button class="filter-btn" id="btnAll">Mostrar Todo</button>
+            <button class="filter-btn" id="btnPredictions">Mostrar Predicciones</button>
+            <button class="filter-btn" id="btnTotalSales">Mostrar Ventas Totales</button>
+        </section>
+        <div class="chart-container">
+            <canvas id="salesChart" width="400" height="200"></canvas>
+        </div>
+        <!-- Tabla de ventas -->
+        <table id="salesTable">
+            <thead>
+                <tr>
+                    <th>Mes</th>
+                    <th>Paises</th>
+                    <th>Ventas Totales</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Los datos se agregarán aquí mediante JavaScript -->
+            </tbody>
+        </table>
+    </main>
+    <!-- Contenedor para el gráfico -->
+    <script src="/sales.js"></script>
 </body>
 </html>

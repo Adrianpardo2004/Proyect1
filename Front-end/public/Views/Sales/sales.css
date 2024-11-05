@@ -1,3 +1,4 @@
+/* Estilos generales para el cuerpo */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -6,21 +7,59 @@ body {
 }
 
 /* Estilos generales */
-h1 {
-    text-align: center;
+.main-content {
+    padding: 40px;
+}
+
+.main-content h1 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 40px;
     color: #333;
-    margin-top: 40px;
+    text-align: center;
+}
+
+.filter-options {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+.filter-btn {
+    background-color: #ECE9FF; /* Color de fondo */
+    border: none; /* Sin borde */
+    padding: 12px 24px; /* Padding más amplio */
+    border-radius: 12px; /* Bordes más redondeados */
+    cursor: pointer; /* Mano al pasar el mouse */
+    color: #6C63FF; /* Color del texto */
+    font-weight: 600; /* Peso del texto */
+    font-size: 16px; /* Tamaño del texto */
+    transition: background-color 0.3s, transform 0.3s; /* Transiciones suaves */
+}
+
+.filter-btn:hover {
+    background-color: #6C63FF; /* Color de fondo al pasar el mouse */
+    color: #FFFFFF; /* Color del texto al pasar el mouse */
+    transform: scale(1.05); /* Aumentar ligeramente el tamaño */
+}
+
+/* Contenedor del gráfico */
+.chart-container {
+    width: 100%;
+    max-width: 800px;
+    height: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 #salesChart {
-    width: 60%; /* Ancho completo */
-    height: 300px; /* Alto por defecto */
+    width: 100% !important; /* Asegúrate de que ocupe el 100% del contenedor */
+    height: 400px !important; /* Puedes ajustar esta altura según lo que necesites */
     margin: 0 auto;
-    margin-top: 40px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Estilos de la tabla */

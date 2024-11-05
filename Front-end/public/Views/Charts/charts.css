@@ -15,8 +15,6 @@ body {
 /* Estilos del contenido principal */
 .main-content {
     padding: 40px;
-    max-width: 1200px;
-    margin: 0 auto;
 }
 
 .main-content h1 {
