@@ -52,6 +52,12 @@ function loadSalesDataAndDrawChart() {
                         title: {
                             display: true,
                             text: 'Composición de Ventas Mensuales'
+                        },
+                        datalabels: { // Agregar etiquetas de datos con los porcentajes
+                            color: 'white', // Color de las etiquetas de los datos
+                            formatter: function(value, context) {
+                                return Math.round((value / salesData.reduce((a, b) => a + b)) * 100) + '%'; // Mostrar porcentaje
+                            }
                         }
                     }
                 }
@@ -93,7 +99,7 @@ function loadSalesDataAndDrawChart() {
         .catch(error => console.error('Error cargando el archivo JSON:', error));
 }
 
-// Función para descargar la imagen del gráfico
+// Función para descargar la imagen del gráfico en formato JPG
 function downloadChartImage() {
     if (!salesChart) {
         alert("El gráfico no está disponible para descargar.");
@@ -101,11 +107,17 @@ function downloadChartImage() {
     }
 
     const canvas = document.getElementById('salesChart');
+
+    // Crear una nueva imagen del gráfico en formato JPG sin bordes ni márgenes extra
+    const imageUrl = canvas.toDataURL("image/jpeg", 0.9);  // '0.9' para calidad máxima
+
+    // Crear un enlace de descarga
     const link = document.createElement('a');
-    link.href = canvas.toDataURL("image/png");
-    link.download = 'grafica_ventas.png';
-    link.click();
+    link.href = imageUrl;  // Enlace a la imagen generada
+    link.download = 'grafica_ventas.jpg';  // Nombre de la imagen descargada
+    link.click();  // Disparar la descarga
 }
+
 
 // Llamar a la función después de que el DOM esté completamente cargado
 document.addEventListener('DOMContentLoaded', () => {
