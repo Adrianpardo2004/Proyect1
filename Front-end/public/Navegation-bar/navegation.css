@@ -11,10 +11,15 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 30px 20px;
     background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
-    position: relative;
-    z-index: 1; /* Asegura que el header esté por encima de las partículas */
+    position: fixed;
+    z-index: 2;
+    width: 100vw; /* Usa 100vw para que ocupe el ancho completo de la ventana */
+    height: auto;
+    top: 0;
+    left: 0; /* Asegura que empiece en el borde izquierdo */
+    box-sizing: border-box; /* Incluye padding dentro del ancho total */
 }
 
 /* Estilos para el video de fondo */
@@ -30,7 +35,8 @@ body {
 }
 
 /* Ajustes adicionales para superponer contenido sobre el video */
-.main-content, .header {
+.main-content {
+    padding-top: 60px; /* Espacio suficiente para que no quede oculto bajo el header */
     position: relative;
     z-index: 1;
 }
@@ -48,6 +54,15 @@ body {
     margin-right: 10px;
 }
 
+.nav{
+    display:flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 25px;
+    transition: all 0.5s  ease;
+    position: fixed;
+}
 /* Navegación */
 .nav ul {
     list-style: none;
@@ -55,12 +70,49 @@ body {
     gap: 20px;
 }
 
-.nav ul li a {
-    color: #333;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 16px;
+.nav.active{
+    background-color: #ffffff; /* Fondo blanco opaco */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra opcional */
+    padding: 10px 15px; /* Padding más pequeño en el modo activo */
+    width: 100vw; /* Asegura que ocupe todo el ancho */
+    transition: background-color 0.3s ease, padding 0.3s ease; /* Transición suave */
+    left: 0; /* Asegura que el elemento cubra todo el ancho de la pantalla */
 }
+
+.nav.active .logo,
+.nav.active a,
+.nav.active .user-options{
+
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+
+}
+
+.nav.active a:hover{
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+    color:#fff;
+}
+   
+.nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    transition: all 0.5s ease;
+}
+
+.nav ul li a:hover{
+padding: 5px 10px;
+background: #fff;
+background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+border-radius: 15px;;
+
+}
+
+.scrol{
+    height:100px;
+}
+
+
 
 /* Opciones de usuario */
 .user-options {

@@ -62,6 +62,13 @@ function loadAdditionalResources(pageUrl) {
     document.body.appendChild(script);
 }
 
+    const nav = document.querySelector('.nav');
+
+    window.addEventListener('scroll',function(){
+        nav.classList.toggle('active',window.scrollY >0)
+
+    })
+
 
 // Configuración del menú de usuario
 document.addEventListener('DOMContentLoaded', () => {

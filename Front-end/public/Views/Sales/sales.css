@@ -64,20 +64,21 @@ body {
 
 /* Estilos de la tabla */
 table {
-    border-collapse: separate;
+    border-collapse: collapse;
     border-spacing: 0;
-    width: 80%;
-    margin: 40px auto;
-    font-size: 14px;
+    width: 50%;  /* Reducido aún más el ancho de la tabla */
+    margin: 20px auto;  /* Ajustado el margen */
+    font-size: 12px;  /* Reducido el tamaño de la fuente */
     background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
     border-radius: 8px; /* Bordes redondeados */
     overflow: hidden; /* Ocultar el borde de la tabla */
+    padding: 15px; /* Reducido el padding del contenedor */
 }
 
 th, td {
-    padding: 12px 15px;
-    text-align: left;
+    padding: 8px 10px;  /* Reducido el padding de las celdas */
+    text-align: center;  /* Centrado de los datos */
     border-bottom: 1px solid #ddd;
 }
 
