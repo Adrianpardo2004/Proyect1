@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Predicciones de Ventas 2024</title>
+    <title>Ventas por País - 2024</title>
     <link rel="stylesheet" href="charts.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Librería Chart.js -->
@@ -11,23 +11,30 @@
 <body>
 
     <main class="main-content">
-        <h1>Predicciones de Ventas 2024</h1>
+        <h1>Predicciones de Ventas por País - 2024</h1>
 
-        <!-- Opciones de filtro para ver datos de todos los meses, pares o impares -->
+        <!-- Selector de país -->
         <section class="filter-options">
-            <button class="filter-btn" onclick="showGraph('all')">Ver Todos los Meses</button>
-            <button class="filter-btn" onclick="showGraph('even')">Ver Meses Pares</button>
-            <button class="filter-btn" onclick="showGraph('odd')">Ver Meses Impares</button>
+            <label for="countrySelect">Selecciona un país:</label>
+            <select id="countrySelect" onchange="showGraph(this.value)" class="filter-btn">
+                <option value="Australia">Australia</option>
+                <option value="Brasil">Brasil</option>
+                <option value="Canadá">Canadá</option>
+                <option value="China">China</option>
+                <option value="Ecuador">Colombia</option>
+                <option value="Francia">Francia</option>
+                <option value="Alemania">Alemania</option>
+                <option value="Italia">Italia</option>
+                <option value="Japón">Japón</option>
+                <option value="Sudáfrica">Sudáfrica</option>
+                <option value="Reino Unido">Reino Unido</option>
+                <option value="Estados Unidos">Estados Unidos</option>
+            </select>
         </section>
 
         <!-- Contenedor para el gráfico -->
         <div class="chart-container">
             <canvas id="predictionsChart" width="400" height="200"></canvas>
-        </div>
-
-        <!-- Contenedor para la tabla -->
-        <div id="data-table" class="data-table">
-            <!-- La tabla se llenará dinámicamente con JavaScript -->
         </div>
     </main>
 
