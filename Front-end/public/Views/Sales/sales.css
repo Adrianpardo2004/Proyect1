@@ -1,6 +1,6 @@
 /* Estilos generales para el cuerpo */
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Roboto Mono";  
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
@@ -15,6 +15,7 @@ body {
     font-size: 36px;
     font-weight: 700;
     margin-bottom: 40px;
+    margin-top: -100px;
     color: #333;
     text-align: center;
 }
