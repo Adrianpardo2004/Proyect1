@@ -1,27 +1,23 @@
 // Cargar y procesar datos del archivo JSON
 async function loadData() {
     try {
-        const response = await fetch('/Data/predictions_2024.json');
+        const response = await fetch('/Data/sales_by_country.json');
         if (!response.ok) {
-            throw new Error('No se pudo cargar predictions_2024.json');
+            throw new Error('No se pudo cargar sales_by_country.json');
         }
         const data = await response.json();
         console.log('Datos cargados:', data); // Verificar datos cargados en la consola
-        return Object.values(data); // Devuelve los valores del JSON en un array
+        return data; // Devuelve el objeto completo de datos
     } catch (error) {
         console.error('Error al cargar los datos:', error);
     }
 }
 
-// Definir meses para las etiquetas del gráfico
-const months = [
-    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
-    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-];
-
 // Inicializar gráfico
 let predictionsChart;
-async function createChart(data, labels) {
+
+// Crear gráfico para un país específico
+async function createChart(countryData, labels) {
     const ctx = document.getElementById('predictionsChart').getContext('2d');
 
     // Destruir gráfico anterior si existe
@@ -29,15 +25,13 @@ async function createChart(data, labels) {
         predictionsChart.destroy();
     }
 
-    console.log('Creando gráfico con datos:', data); // Verificar datos en la consola
-
     predictionsChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: labels,
             datasets: [{
-                label: 'Predicciones de Ventas 2024',
-                data: data,
+                label: 'Ventas Mensuales de ' + countryData.pais,
+                data: countryData.totales,
                 backgroundColor: 'rgba(54, 162, 235, 0.5)',
                 borderColor: 'rgba(54, 162, 235, 1)',
                 borderWidth: 1
@@ -64,30 +58,22 @@ async function createChart(data, labels) {
     });
 }
 
-// Filtrar datos y mostrar gráficos
-async function showGraph(filter) {
+// Filtrar y mostrar gráfico de un país
+async function showGraph(country) {
     const data = await loadData();
-    if (!data) return; // Verificar si los datos están cargados correctamente
+    if (!data || !data[country]) return; // Verificar si los datos están cargados correctamente
 
-    let filteredData;
-    let filteredLabels;
+    const countryData = {
+        pais: country,
+        totales: data[country].totales
+    };
 
-    switch(filter) {
-        case 'even':
-            filteredData = data.filter((_, index) => (index + 1) % 2 === 0);
-            filteredLabels = months.filter((_, index) => (index + 1) % 2 === 0);
-            break;
-        case 'odd':
-            filteredData = data.filter((_, index) => (index + 1) % 2 !== 0);
-            filteredLabels = months.filter((_, index) => (index + 1) % 2 !== 0);
-            break;
-        default:
-            filteredData = data;
-            filteredLabels = months;
-    }
-
-    createChart(filteredData, filteredLabels);
+    // Crear el gráfico para el país seleccionado
+    createChart(countryData, [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ]);
 }
 
-// Mostrar todos los datos al cargar la página
-window.onload = () => showGraph('all');
+// Mostrar datos de un país específico al cargar la página
+window.onload = () => showGraph('Australia'); // Cambia 'Australia' según el país inicial que desees mostrar
