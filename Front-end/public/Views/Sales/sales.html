@@ -14,21 +14,34 @@
 
     <main class="main-content">
         <h1>Desempeño de Ventas: Análisis 2023 y Proyecciones 2024</h1>
+
         <!-- Opciones de filtro para ver datos de todos los meses, pares o impares -->
         <section class="filter-options">
             <button class="filter-btn" id="btnAll">Mostrar Todo</button>
             <button class="filter-btn" id="btnPredictions">Mostrar Predicciones</button>
             <button class="filter-btn" id="btnTotalSales">Mostrar Ventas Totales</button>
         </section>
-        <div class="chart-container">
-            <canvas id="salesChart" width="400" height="200"></canvas>
+
+        <!-- Contenedor de dos columnas: gráfico y cuadro de texto -->
+        <div class="content-container">
+            <!-- Columna para el gráfico -->
+            <div class="chart-container">
+                <canvas id="salesChart" width="400" height="200"></canvas>
+            </div>
+
+            <!-- Columna para el cuadro de texto -->
+            <div class="text-container">
+                <h2>Descripción del Análisis</h2>
+                <p>Este análisis proporciona una visión detallada del desempeño de ventas por país durante el 2023, junto con proyecciones para el 2024. La gráfica a la izquierda muestra las tendencias de ventas totales y predicciones futuras basadas en datos históricos.</p>
+                <p>Puedes usar los botones de filtro para visualizar solo las predicciones o las ventas totales mensuales, lo que facilita un análisis más específico según las necesidades del negocio.</p>
+            </div>
         </div>
+
         <!-- Tabla de ventas -->
         <table id="salesTable">
             <thead>
                 <tr>
                     <th>Mes</th>
-
                     <th>Ventas Totales</th>
                 </tr>
             </thead>
@@ -37,7 +50,8 @@
             </tbody>
         </table>
     </main>
-    <!-- Contenedor para el gráfico -->
+
+    <!-- Script para cargar y configurar el gráfico -->
     <script src="/sales.js"></script>
 </body>
 </html>
