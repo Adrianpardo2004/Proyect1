@@ -16,8 +16,11 @@ function loadPage(pageUrl) {
 
             // Inicializar el gráfico si es el dashboard
             if (pageUrl.includes('../DashBoard/dashboard.html')) {
-                // Llamar a la función para cargar datos y dibujar el gráfico
-                loadSalesDataAndDrawChart(); // Asegúrate de que la función esté disponible
+                if (typeof loadSalesDataAndDrawChart === 'function') {
+                    loadSalesDataAndDrawChart();
+                } else {
+                    console.error('La función loadSalesDataAndDrawChart no está definida.');
+                }
             } else if (pageUrl.includes('../Views/Sales/sales.html')) {
                 console.log("Sales page loaded");
             }
@@ -28,47 +31,61 @@ function loadPage(pageUrl) {
         });
 }
 
+// Cargar CSS y JS adicionales solo si existen y tienen el tipo MIME correcto
+function loadAdditionalResources(pageUrl) {
+    // Comprobación y carga del archivo CSS
+    const cssFile = pageUrl.replace('.html', '.css');
+    fetch(cssFile, { method: 'HEAD' })
+        .then(response => {
+            if (response.ok && response.headers.get("Content-Type").includes("text/css")) {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = cssFile;
+                document.head.appendChild(link);
+            } else {
+                console.warn(`No se pudo cargar el archivo CSS: ${cssFile}`);
+            }
+        })
+        .catch(error => console.error('Error al verificar el archivo CSS:', error));
 
-// navigation.js
+    // Comprobación y carga del archivo JS
+    const jsFile = pageUrl.replace('.html', '.js');
+    fetch(jsFile, { method: 'HEAD' })
+        .then(response => {
+            if (response.ok && response.headers.get("Content-Type").includes("application/javascript")) {
+                const script = document.createElement('script');
+                script.src = jsFile;
+
+                // Asegurar que el gráfico se cargue después del script
+                script.onload = () => {
+                    if (pageUrl.includes('dashboard.html') && typeof loadSalesDataAndDrawChart === 'function') {
+                        loadSalesDataAndDrawChart();
+                    }
+                };
+
+                document.body.appendChild(script);
+            } else {
+                console.warn(`No se pudo cargar el archivo JS: ${jsFile}`);
+            }
+        })
+        .catch(error => console.error('Error al verificar el archivo JS:', error));
+}
+
+// Navegación y eventos en la barra de navegación
 document.addEventListener('DOMContentLoaded', () => {
+    const nav = document.querySelector('.nav');
+
+    window.addEventListener('scroll', function() {
+        nav.classList.toggle('active', window.scrollY > 0);
+    });
+
     // Verifica si la función existe antes de llamarla
     if (typeof loadSalesDataAndDrawChart === 'function') {
-        loadSalesDataAndDrawChart(); // Llamar a la función para cargar datos y dibujar el gráfico
+        loadSalesDataAndDrawChart();
     } else {
         console.error('La función loadSalesDataAndDrawChart no está definida.');
     }
 });
-
-// Cargar CSS y JS adicionales
-function loadAdditionalResources(pageUrl) {
-    const cssFile = pageUrl.replace('.html', '.css');
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = cssFile;
-    document.head.appendChild(link);
-
-    const jsFile = pageUrl.replace('.html', '.js');
-    const script = document.createElement('script');
-    script.src = jsFile;
-    
-    // Aquí se asegura de que el gráfico se cargue después de que el script se haya cargado
-    script.onload = () => {
-        // Llamar a la función para cargar datos y dibujar el gráfico si es el dashboard
-        if (pageUrl.includes('dashboard.html')) {
-            loadSalesDataAndDrawChart(); // Asegúrate de que la función esté disponible
-        }
-    };
-    
-    document.body.appendChild(script);
-}
-
-    const nav = document.querySelector('.nav');
-
-    window.addEventListener('scroll',function(){
-        nav.classList.toggle('active',window.scrollY >0)
-
-    })
-
 
 // Configuración del menú de usuario
 document.addEventListener('DOMContentLoaded', () => {
@@ -101,12 +118,3 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = "../Login-Menu/index.html";
     });
 });
-
-
-
-
-
-
-
-
-

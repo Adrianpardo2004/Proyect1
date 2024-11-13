@@ -2,6 +2,11 @@
 console.log('sales.js cargado');
 
 (function() {
+    /**
+     * An array containing the names of the months in Spanish.
+     *
+     * @type {string[]}
+     */
     const months = [
         'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
         'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
@@ -10,6 +15,10 @@ console.log('sales.js cargado');
     let salesChart; // Variable para almacenar la instancia de la gráfica
 
     // Función para cargar datos desde el archivo JSON
+    /**
+     * Carga datos de ventas desde un archivo JSON.
+     * @returns {Promise<Object>} Datos de ventas como un objeto JSON.
+     */
     async function loadData() {
         try {
             const response = await fetch('../../Data/sales_by_country.json');
@@ -25,6 +34,10 @@ console.log('sales.js cargado');
     }
 
     // Función para cargar datos del archivo JSON de predicciones
+    /**
+     * Carga datos de predicciones de ventas desde un archivo JSON.
+     * @returns {Promise<Array>} Datos de predicciones como un array.
+     */
     async function loadPredictions() {
         try {
             const response = await fetch('../../Data/predictions_2024.json');
@@ -40,6 +53,10 @@ console.log('sales.js cargado');
     }
 
     // Función para cargar datos del archivo JSON de sumas totales
+    /**
+     * Carga datos de predicciones de ventas ajustadas desde un archivo JSON.
+     * @returns {Promise<Object>} Datos de predicciones ajustadas como un objeto JSON.
+     */
     async function loadTotalSales() {
         try {
             const response = await fetch('../../Data/predictions_2024_ajustadas.json');
@@ -56,6 +73,12 @@ console.log('sales.js cargado');
     }
 
     // Función para actualizar la gráfica y la tabla
+    /**
+     * Actualiza la gráfica y la tabla de ventas.
+     * @param {Object} data - Datos de ventas.
+     * @param {Object} chartData - Datos en formato para la gráfica.
+     * @param {string} chartTitle - Título de la gráfica.
+     */
     async function updateTableAndChart(data, chartData, chartTitle) {
         // Limpiar la tabla y crear nueva
         const salesTableBody = document.getElementById('salesTable').getElementsByTagName('tbody')[0];
@@ -110,6 +133,10 @@ console.log('sales.js cargado');
     }
 
     // Función para generar la tabla y la gráfica con datos de ventas
+    /**
+     * Genera la tabla y la gráfica con datos de ventas.
+     * @param {Object} data - Datos de ventas.
+     */
     async function generateTableAndChart(data) {
         const chartData = {}; // Para la gráfica
 
@@ -132,6 +159,9 @@ console.log('sales.js cargado');
     }
 
     // Función para crear la gráfica de predicciones de ventas
+    /**
+     * Crea la gráfica de predicciones de ventas.
+     */
     async function createPredictionsChart() {
         const data = await loadPredictions();
         if (!data) return;
@@ -145,6 +175,9 @@ console.log('sales.js cargado');
     }
 
     // Función para crear la gráfica de predicciones de ventas totales ajustadas
+    /**
+     * Crea la gráfica de predicciones de ventas totales ajustadas.
+     */
     async function createTotalSalesChart() {
         const data = await loadTotalSales();
         if (!data) return;
@@ -166,6 +199,9 @@ console.log('sales.js cargado');
     }
 
     // Función para cargar automáticamente la primera gráfica al cargar la página
+    /**
+     * Carga automáticamente la primera gráfica al cargar la página.
+     */
     async function loadInitialChart() {
         const data = await loadData();
         generateTableAndChart(data);
