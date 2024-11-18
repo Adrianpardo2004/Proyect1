@@ -1,79 +1,130 @@
-// Cargar y procesar datos del archivo JSON
-async function loadData() {
-    try {
-        const response = await fetch('/Data/sales_by_country.json');
-        if (!response.ok) {
-            throw new Error('No se pudo cargar sales_by_country.json');
+// Confirmación de que charts.js está cargado
+console.log('charts.js cargado');
+
+(function () {
+    /**
+     * Meses en español.
+     * @type {string[]}
+     */
+    const months = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+
+    let chartInstance; // Instancia de la gráfica
+
+    /**
+     * Carga datos desde un archivo JSON.
+     * @param {string} url - URL del archivo JSON.
+     * @returns {Promise<Object>} Datos JSON cargados.
+     */
+    async function loadData(url) {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Error al cargar el archivo JSON: ' + response.statusText);
+            }
+            const data = await response.json();
+            console.log('Datos cargados:', data);
+            return data;
+        } catch (error) {
+            console.error('Error al cargar los datos:', error);
         }
-        const data = await response.json();
-        console.log('Datos cargados:', data); // Verificar datos cargados en la consola
-        return data; // Devuelve el objeto completo de datos
-    } catch (error) {
-        console.error('Error al cargar los datos:', error);
-    }
-}
-
-// Inicializar gráfico
-let predictionsChart;
-
-// Crear gráfico para un país específico
-async function createChart(countryData, labels) {
-    const ctx = document.getElementById('predictionsChart').getContext('2d');
-
-    // Destruir gráfico anterior si existe
-    if (predictionsChart) {
-        predictionsChart.destroy();
     }
 
-    predictionsChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Ventas Mensuales de ' + countryData.pais,
-                data: countryData.totales,
-                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Ventas (en unidades o valores monetarios)'
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Meses'
+    /**
+     * Genera una gráfica de ventas para un país específico.
+     * @param {Object} data - Datos de ventas por país.
+     * @param {string} country - Nombre del país a mostrar.
+     */
+    async function generateChart(data, country) {
+        if (!data[country]) {
+            console.error(`País no encontrado en los datos: ${country}`);
+            return;
+        }
+
+        const countryData = data[country];
+        const chartData = {};
+
+        // Procesar datos del país seleccionado
+        for (let i = 0; i < countryData.meses.length; i++) {
+            const month = months[countryData.meses[i] - 1];
+            chartData[month] = countryData.totales[i];
+        }
+
+        // Crear la gráfica
+        const ctx = document.getElementById('predictionsChart').getContext('2d');
+
+        if (chartInstance) {
+            chartInstance.destroy(); // Destruir gráfica previa
+        }
+
+        chartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(chartData),
+                datasets: [{
+                    label: `Ventas Mensuales en ${country}`,
+                    data: Object.values(chartData),
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Ventas (en unidades o valores monetarios)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Meses'
+                        }
                     }
                 }
             }
+        });
+    }
+
+    /**
+     * Carga y muestra la gráfica inicial.
+     */
+    async function loadInitialChart() {
+        const data = await loadData('../../Data/sales_by_country.json');
+        if (data) {
+            generateChart(data, 'Australia'); // País inicial
         }
-    });
-}
+    }
 
-// Filtrar y mostrar gráfico de un país
-async function showGraph(country) {
-    const data = await loadData();
-    if (!data || !data[country]) return; // Verificar si los datos están cargados correctamente
+    /**
+     * Configura los eventos de los botones para seleccionar países.
+     * @param {Object} data - Datos de ventas por país.
+     */
+    async function setupCountryButtons(data) {
+        const countrySelect = document.getElementById('countrySelect');
 
-    const countryData = {
-        pais: country,
-        totales: data[country].totales
-    };
+        countrySelect.addEventListener('change', (event) => {
+            const selectedCountry = event.target.value;
+            generateChart(data, selectedCountry);
+        });
+    }
 
-    // Crear el gráfico para el país seleccionado
-    createChart(countryData, [
-        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
-        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-    ]);
-}
+    // Cargar los datos y configurar la funcionalidad
+    async function init() {
+        const data = await loadData('../../Data/sales_by_country.json');
+        if (data) {
+            await loadInitialChart();
+            setupCountryButtons(data); // Configura los botones con los datos cargados
+        }
+    }
 
-// Mostrar datos de un país específico al cargar la página
-window.onload = () => showGraph('Australia'); // Cambia 'Australia' según el país inicial que desees mostrar
+    // Llamar a la función principal
+    init();
+})();
