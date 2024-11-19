@@ -2,22 +2,28 @@
 console.log('charts.js cargado');
 
 (function () {
-    /**
-     * Meses en español.
-     * @type {string[]}
-     */
     const months = [
         'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
         'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
     ];
 
-    let chartInstance; // Instancia de la gráfica
+    let chartInstance;
 
-    /**
-     * Carga datos desde un archivo JSON.
-     * @param {string} url - URL del archivo JSON.
-     * @returns {Promise<Object>} Datos JSON cargados.
-     */
+    const descriptions = {
+        'Australia': 'Australia es conocida por su estabilidad económica y su fuerte industria minera. Las ventas tienden a aumentar en los meses de invierno.',
+        'Brasil': 'Brasil, con su vasta población, muestra un comportamiento de ventas estacional influenciado por festividades locales.',
+        'Canadá': 'Canadá destaca por su fuerte sector tecnológico y picos de ventas en verano e invierno.',
+        'China': 'China, una de las economías más grandes del mundo, experimenta picos de ventas durante el Año Nuevo Lunar.',
+        'Colombia': 'En Ecuador, las ventas están marcadas por eventos locales y cambios estacionales.',
+        'Francia': 'Francia muestra tendencias de ventas estables con picos durante las vacaciones de verano.',
+        'Alemania': 'Alemania, líder en manufactura, tiene un comportamiento de ventas estable con un ligero aumento en otoño.',
+        'Italia': 'Italia, con su rica cultura, tiene picos de ventas durante la temporada de turismo.',
+        'Japón': 'Japón experimenta picos de ventas en primavera y otoño, coincidiendo con festividades tradicionales.',
+        'Sudáfrica': 'En Sudáfrica, las ventas tienden a fluctuar según las estaciones, con picos en diciembre.',
+        'Reino Unido': 'El Reino Unido muestra ventas altas en invierno, especialmente durante las festividades de fin de año.',
+        'Estados Unidos': 'En los Estados Unidos, el comportamiento de ventas refleja un fuerte aumento en la temporada navideña.'
+    };
+
     async function loadData(url) {
         try {
             const response = await fetch(url);
@@ -25,18 +31,12 @@ console.log('charts.js cargado');
                 throw new Error('Error al cargar el archivo JSON: ' + response.statusText);
             }
             const data = await response.json();
-            console.log('Datos cargados:', data);
             return data;
         } catch (error) {
             console.error('Error al cargar los datos:', error);
         }
     }
 
-    /**
-     * Genera una gráfica de ventas para un país específico.
-     * @param {Object} data - Datos de ventas por país.
-     * @param {string} country - Nombre del país a mostrar.
-     */
     async function generateChart(data, country) {
         if (!data[country]) {
             console.error(`País no encontrado en los datos: ${country}`);
@@ -46,17 +46,15 @@ console.log('charts.js cargado');
         const countryData = data[country];
         const chartData = {};
 
-        // Procesar datos del país seleccionado
         for (let i = 0; i < countryData.meses.length; i++) {
             const month = months[countryData.meses[i] - 1];
             chartData[month] = countryData.totales[i];
         }
 
-        // Crear la gráfica
         const ctx = document.getElementById('predictionsChart').getContext('2d');
 
         if (chartInstance) {
-            chartInstance.destroy(); // Destruir gráfica previa
+            chartInstance.destroy();
         }
 
         chartInstance = new Chart(ctx, {
@@ -66,8 +64,8 @@ console.log('charts.js cargado');
                 datasets: [{
                     label: `Ventas Mensuales en ${country}`,
                     data: Object.values(chartData),
-                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(0, 123, 255, 0.5)', // Color de las barras
+                    borderColor: 'rgba(0, 123, 255, 1)', // Borde de las barras
                     borderWidth: 1
                 }]
             },
@@ -91,22 +89,19 @@ console.log('charts.js cargado');
                 }
             }
         });
+
+        // Actualizar el texto descriptivo
+        const descriptionBox = document.getElementById('chartDescription');
+        descriptionBox.querySelector('p').textContent = descriptions[country] || 'Descripción no disponible para este país.';
     }
 
-    /**
-     * Carga y muestra la gráfica inicial.
-     */
     async function loadInitialChart() {
         const data = await loadData('../../Data/sales_by_country.json');
         if (data) {
-            generateChart(data, 'Australia'); // País inicial
+            generateChart(data, 'Australia');
         }
     }
 
-    /**
-     * Configura los eventos de los botones para seleccionar países.
-     * @param {Object} data - Datos de ventas por país.
-     */
     async function setupCountryButtons(data) {
         const countrySelect = document.getElementById('countrySelect');
 
@@ -116,15 +111,13 @@ console.log('charts.js cargado');
         });
     }
 
-    // Cargar los datos y configurar la funcionalidad
     async function init() {
         const data = await loadData('../../Data/sales_by_country.json');
         if (data) {
             await loadInitialChart();
-            setupCountryButtons(data); // Configura los botones con los datos cargados
+            setupCountryButtons(data);
         }
     }
 
-    // Llamar a la función principal
     init();
 })();

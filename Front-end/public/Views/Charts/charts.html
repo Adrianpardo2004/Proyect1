@@ -1,44 +1,36 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ventas por País - 2024</title>
-    <link rel="stylesheet" href="charts.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Librería Chart.js -->
-</head>
-<body>
+<main class="main-content">
+    <h1>Ventas por País - 2024</h1>
 
-    <main class="main-content">
-        <h1>Predicciones de Ventas por País - 2024</h1>
+    <!-- Selector de país -->
+    <section class="filter-options">
+        <label for="countrySelect">Selecciona un país:</label>
+        <select id="countrySelect">
+            <option value="Australia">Australia</option>
+            <option value="Brasil">Brasil</option>
+            <option value="Canadá">Canadá</option>
+            <option value="China">China</option>
+            <option value="Colombia">Colombia</option>
+            <option value="Francia">Francia</option>
+            <option value="Alemania">Alemania</option>
+            <option value="Italia">Italia</option>
+            <option value="Japón">Japón</option>
+            <option value="Sudáfrica">Sudáfrica</option>
+            <option value="Reino Unido">Reino Unido</option>
+            <option value="Estados Unidos">Estados Unidos</option>
+        </select>
+    </section>
 
-        <!-- Selector de país -->
-        <section class="filter-options">
-            <label for="countrySelect">Selecciona un país:</label>
-            <select id="countrySelect" onchange="showGraph(this.value)" class="filter-btn">
-                <option value="Australia">Australia</option>
-                <option value="Brasil">Brasil</option>
-                <option value="Canadá">Canadá</option>
-                <option value="China">China</option>
-                <option value="Ecuador">Colombia</option>
-                <option value="Francia">Francia</option>
-                <option value="Alemania">Alemania</option>
-                <option value="Italia">Italia</option>
-                <option value="Japón">Japón</option>
-                <option value="Sudáfrica">Sudáfrica</option>
-                <option value="Reino Unido">Reino Unido</option>
-                <option value="Estados Unidos">Estados Unidos</option>
-            </select>
-        </section>
-
-        <!-- Contenedor para el gráfico -->
+    <!-- Contenedor principal -->
+    <div class="content-container">
+        <!-- Contenedor para la gráfica -->
         <div class="chart-container">
             <canvas id="predictionsChart" width="400" height="200"></canvas>
         </div>
-    </main>
 
-    <!-- Archivo JavaScript para cargar y mostrar los gráficos -->
-    <script src="charts.js" defer></script>
-</body>
-</html>
+        <!-- Contenedor para el texto descriptivo -->
+        <div class="text-container" id="chartDescription">
+            <h2>Descripción</h2>
+            <p>Selecciona un país para ver su descripción.</p>
+        </div>
+    </div>
+</main>
