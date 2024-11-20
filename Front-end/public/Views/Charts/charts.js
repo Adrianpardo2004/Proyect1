@@ -19,7 +19,7 @@ console.log('charts.js cargado');
         'Alemania': 'Alemania, líder en manufactura, tiene un comportamiento de ventas estable con un ligero aumento en otoño.',
         'Italia': 'Italia, con su rica cultura, tiene picos de ventas durante la temporada de turismo.',
         'Japón': 'Japón experimenta picos de ventas en primavera y otoño, coincidiendo con festividades tradicionales.',
-        'Sudáfrica': 'En Sudáfrica, las ventas tienden a fluctuar según las estaciones, con picos en diciembre.',
+        'Sudáfrica': 'En Sudáfrica, las ventas tienden a fluctuar según las estaciones, con picos en marzo.',
         'Reino Unido': 'El Reino Unido muestra ventas altas en invierno, especialmente durante las festividades de fin de año.',
         'Estados Unidos': 'En los Estados Unidos, el comportamiento de ventas refleja un fuerte aumento en la temporada navideña.'
     };
